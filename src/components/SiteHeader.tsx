@@ -14,6 +14,7 @@ type SiteHeaderProps = {
 export function SiteHeader({mainNav}: SiteHeaderProps) {
   const [open, setOpen] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [compact, setCompact] = useState(false)
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -22,8 +23,15 @@ export function SiteHeader({mainNav}: SiteHeaderProps) {
     }
   }, [open])
 
+  useEffect(() => {
+    const onScroll = () => setCompact(window.scrollY > 40)
+    onScroll()
+    window.addEventListener('scroll', onScroll, {passive: true})
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <header className="relative z-40 bg-paper">
+    <header className="sticky top-0 z-40 bg-paper">
       <div className="relative flex h-[82px] items-center px-[15px]">
         <button
           type="button"
@@ -32,16 +40,16 @@ export function SiteHeader({mainNav}: SiteHeaderProps) {
           aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
         >
-          <span className={`block h-px w-full transition ${open ? 'translate-y-[9px] rotate-45 bg-copper' : 'bg-ink'}`} />
-          <span className={`block h-px w-full transition ${open ? 'opacity-0 bg-copper' : 'bg-ink'}`} />
+          <span className={`block h-0.5 w-full transition ${open ? 'translate-y-[9px] rotate-45 bg-copper' : 'bg-ink'}`} />
+          <span className={`block h-0.5 w-full transition ${open ? 'opacity-0 bg-copper' : 'bg-ink'}`} />
           <span
-            className={`block h-px w-full transition ${open ? '-translate-y-[9px] -rotate-45 bg-copper' : 'bg-ink'}`}
+            className={`block h-0.5 w-full transition ${open ? '-translate-y-[9px] -rotate-45 bg-copper' : 'bg-ink'}`}
           />
         </button>
 
-        <div className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-[82px] justify-center">
           <div className="pointer-events-auto">
-            <BrandLogo tone={open ? 'light' : 'dark'} />
+            <BrandLogo compact={compact && !open} />
           </div>
         </div>
       </div>

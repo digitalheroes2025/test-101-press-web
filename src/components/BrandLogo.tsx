@@ -1,30 +1,45 @@
 import Link from 'next/link'
 
-export function BrandLogo({tone = 'dark'}: {tone?: 'dark' | 'light'}) {
-  const color = tone === 'light' ? 'text-copper' : 'text-ink'
+type BrandLogoProps = {
+  compact?: boolean
+  className?: string
+}
 
+export function BrandLogo({compact = false, className = ''}: BrandLogoProps) {
   return (
     <Link
       href="/presse"
-      className={`inline-flex flex-col items-center gap-0.5 ${color}`}
+      className={`relative inline-flex h-[82px] w-[170px] items-center justify-center ${className}`}
       aria-label="Die 101 Besten"
     >
-      <span className="flex items-center gap-[3px]" aria-hidden="true">
-        {[0, 1, 2, 3, 4].map((index) => (
-          <svg key={index} width="11" height="11" viewBox="0 0 24 24" fill={index === 2 ? 'currentColor' : 'none'}>
-            <path
-              d="M12 2.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 15.8 6.7 18.6l1-5.8L3.5 8.7l5.9-.9L12 2.5z"
-              stroke="currentColor"
-              strokeWidth="1.4"
-            />
-          </svg>
-        ))}
+      <span
+        className={`absolute left-1/2 top-1/2 block w-[170px] -translate-x-1/2 transition duration-300 ${
+          compact ? '-translate-y-[120px] opacity-0' : '-translate-y-1/2 opacity-100'
+        }`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brand/logo-full.svg"
+          alt=""
+          width={170}
+          height={70}
+          className="block h-[70px] w-[170px] max-w-none"
+        />
       </span>
-      <span className="text-center font-display text-[18px] font-light leading-none tracking-[0.06em] md:text-[22px]">
-        DIE 101 BESTEN
-      </span>
-      <span className="text-center font-body text-[10px] font-light uppercase tracking-[0.2em] md:text-[11px]">
-        Hotels Deutschlands
+      <span
+        className={`absolute left-1/2 top-1/2 block w-[85px] -translate-x-1/2 transition duration-300 ${
+          compact ? '-translate-y-1/2 opacity-100' : 'translate-y-[55px] opacity-0'
+        }`}
+        aria-hidden={!compact}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brand/logo-mark.svg"
+          alt=""
+          width={85}
+          height={40}
+          className="mx-auto block h-10 w-[85px] max-w-none"
+        />
       </span>
     </Link>
   )

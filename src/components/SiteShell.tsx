@@ -1,3 +1,5 @@
+import {PrivacyWidget} from '@/components/PrivacyWidget'
+import {ScrollToTop} from '@/components/ScrollToTop'
 import {SiteFooter} from '@/components/SiteFooter'
 import {SiteHeader} from '@/components/SiteHeader'
 import type {SiteSettings} from '@/sanity/types'
@@ -13,6 +15,8 @@ export function SiteShell({settings, children}: SiteShellProps) {
       <SiteHeader mainNav={settings?.mainNav} />
       <main className="flex-1">{children}</main>
       <SiteFooter settings={settings} />
+      <ScrollToTop />
+      <PrivacyWidget />
     </div>
   )
 }

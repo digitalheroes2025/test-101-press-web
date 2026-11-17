@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
+  // Hide Next.js "N" badge so it does not cover the privacy icon
+  devIndicators: false,
   async redirects() {
     return [
       {

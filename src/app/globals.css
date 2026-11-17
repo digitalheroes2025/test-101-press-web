@@ -25,6 +25,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Keep Next.js issue/dev badge from covering the privacy widget (dev only). */
+nextjs-portal {
+  display: none !important;
+}
+
+/* Keep Next.js issue/dev badge from covering the privacy widget (dev only). */
+nextjs-portal {
+  display: none !important;
+}
+
 body {
   margin: 0;
   min-height: 100%;

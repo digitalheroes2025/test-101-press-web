@@ -6,8 +6,6 @@ import Link from 'next/link'
 import {resolveImageUrl} from '@/sanity/image'
 import type {SiteSettings} from '@/sanity/types'
 
-import {IconChevronUp} from './icons'
-
 type SiteFooterProps = {
   settings?: SiteSettings | null
 }
@@ -43,55 +41,48 @@ export function SiteFooter({settings}: SiteFooterProps) {
         </div>
       ) : null}
 
-      <div className="site-container flex flex-col items-center">
-        <button
-          type="button"
-          className="mb-10 text-copper"
-          aria-label="Nach oben"
-          onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
-        >
-          <IconChevronUp />
-        </button>
+      <div className="site-container">
+        <div className="flex flex-col items-center border-t-2 border-copper pt-[30px]">
+          {settings?.footerHeading ? (
+            <p className="mb-[70px] text-center font-body text-[18px] font-normal leading-[1.2] text-copper">
+              {settings.footerHeading}
+            </p>
+          ) : null}
 
-        {settings?.footerHeading ? (
-          <p className="mb-[70px] text-center font-body text-[18px] font-normal leading-[1.2] text-copper md:text-[18px]">
-            {settings.footerHeading}
-          </p>
-        ) : null}
+          {logos.length > 0 ? (
+            <div className="mb-14 grid w-full grid-cols-1 items-center justify-items-center gap-10 sm:grid-cols-3">
+              {logos.map((logo) => {
+                const src = resolveImageUrl(logo)
+                if (!src) return null
+                return (
+                  <Link key={logo._key} href={logo.href} target="_blank" rel="noopener noreferrer">
+                    <Image
+                      src={src}
+                      alt={logo.alt || '101 Ranking'}
+                      width={240}
+                      height={180}
+                      className="h-auto w-[200px] object-contain"
+                    />
+                  </Link>
+                )
+              })}
+            </div>
+          ) : null}
 
-        {logos.length > 0 ? (
-          <div className="mb-14 grid w-full grid-cols-1 items-center justify-items-center gap-10 sm:grid-cols-3">
-            {logos.map((logo) => {
-              const src = resolveImageUrl(logo)
-              if (!src) return null
-              return (
-                <Link key={logo._key} href={logo.href} target="_blank" rel="noopener noreferrer">
-                  <Image
-                    src={src}
-                    alt={logo.alt || '101 Ranking'}
-                    width={240}
-                    height={180}
-                    className="h-auto w-[200px] object-contain"
-                  />
+          {links.length > 0 ? (
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              {links.map((link) => (
+                <Link
+                  key={link._key}
+                  href={link.href}
+                  className="font-body text-[16px] font-light text-copper underline underline-offset-4"
+                >
+                  {link.label}
                 </Link>
-              )
-            })}
-          </div>
-        ) : null}
-
-        {links.length > 0 ? (
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {links.map((link) => (
-              <Link
-                key={link._key}
-                href={link.href}
-                className="font-body text-[16px] font-light text-copper underline underline-offset-4"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        ) : null}
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
     </footer>
   )

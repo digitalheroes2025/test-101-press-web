@@ -45,3 +45,17 @@ export function IconChevronUp({className}: {className?: string}) {
     </svg>
   )
 }
+
+export function IconChevronDown({className}: {className?: string}) {
+  return (
+    <svg className={className} width="17" height="9" viewBox="0 0 17 9" fill="none" aria-hidden="true">
+      <path
+        d="M15.0625 1L8.3625 7.69937C8.31902 7.74291 8.26739 7.77745 8.21055 7.80102C8.15371 7.82459 8.09278 7.83672 8.03125 7.83672C7.96972 7.83672 7.90879 7.82459 7.85195 7.80102C7.79511 7.77745 7.74348 7.74291 7.7 7.69937L1 1"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
