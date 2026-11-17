@@ -1,9 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/presse",
+        permanent: true,
+      },
+    ];
+  },
+  images: {
+    remotePatterns: [
+      {protocol: "https", hostname: "cdn.sanity.io"},
+      {protocol: "https", hostname: "die-101-besten.de"},
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {

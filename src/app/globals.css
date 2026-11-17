@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand-ink: #000000;
+  --brand-paper: #ffffff;
+  --brand-copper: #c35f3d;
+  --brand-nav: #000000;
+  --site-container: 1320px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-copper: #c35f3d;
+  --color-nav: #000000;
+  --font-display: var(--font-display-face), "Times New Roman", Georgia, serif;
+  --font-body: var(--font-body-face), "Helvetica Neue", Arial, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  min-height: 100%;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 21px;
+  line-height: 25.2px;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .site-container {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: 12px;
+  }
+
+  .section-separator {
+    height: 2px;
+    width: 100%;
+    background: #000000;
+  }
+
+  .press-section {
+    margin: 0 0 120px;
+  }
+
+  .press-heading {
+    margin: 0 0 5px;
+    font-family: var(--font-display);
+    font-size: 43px;
+    font-weight: 300;
+    line-height: 49.88px;
+    text-align: center;
+    color: #000000;
+  }
+
+  .press-subheading {
+    margin: 0 0 17px;
+    font-family: var(--font-body);
+    font-size: 33px;
+    font-weight: 300;
+    line-height: 38.28px;
+    text-align: center;
+    color: #000000;
+  }
+
+  /* Live: ~120px date column + 30px gutter before copper title */
+  .press-item {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    column-gap: 30px;
+    align-items: start;
+    margin: 0 0 15px;
+    padding: 0;
+    font-family: var(--font-body);
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 25.2px;
+    color: #000000;
+  }
+
+  .press-item a {
+    color: #c35f3d;
+    text-decoration: underline;
+    text-decoration-color: #c35f3d;
+    text-underline-offset: 2px;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 18px;
+    line-height: 21.6px;
+  }
+
+  .press-heading {
+    font-size: 38px;
+    line-height: 44px;
+  }
+
+  .press-subheading {
+    font-size: 28px;
+    line-height: 32.5px;
+  }
+
+  .press-item {
+    grid-template-columns: 108px minmax(0, 1fr);
+    column-gap: 16px;
+    font-size: 18px;
+    line-height: 21.6px;
+  }
 }
