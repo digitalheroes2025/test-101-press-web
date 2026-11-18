@@ -10,62 +10,67 @@ export const PRESS_PAGE_QUERY = defineQuery(`
     language,
     "slug": slug.current,
     edition,
-    components[]{
+    "components": components[]{
       _key,
-      _type,
-      _type == "pressContactSection" => {
-        heading,
-        companyName,
-        contactName,
-        address{
-          text,
-          "iconUrl": icon.asset->url
+      ...select(
+        _type == "adBannerSection" => {
+          _type,
+          desktopLabel,
+          desktopAdType,
+          mobileLabel,
+          mobileAdType,
+          "desktopAd": *[
+            _type == "ad" &&
+            active != false &&
+            edition == ^.^.edition &&
+            format == ^.desktopAdType
+          ] | order(_updatedAt desc)[0]{
+            alt,
+            href,
+            "imageUrl": coalesce(image.asset->url, externalImageUrl)
+          },
+          "mobileAd": *[
+            _type == "ad" &&
+            active != false &&
+            edition == ^.^.edition &&
+            format == ^.mobileAdType
+          ] | order(_updatedAt desc)[0]{
+            alt,
+            href,
+            "imageUrl": coalesce(image.asset->url, externalImageUrl)
+          }
         },
-        email{
-          text,
-          "iconUrl": icon.asset->url
+        _type in ["reference", "pressContactRef", "pressListRef"] => @->{
+          _type,
+          _type == "pressContactSection" => {
+            heading,
+            companyName,
+            contactName,
+            address{
+              text,
+              "iconUrl": icon.asset->url
+            },
+            email{
+              text,
+              "iconUrl": icon.asset->url
+            }
+          },
+          _type == "pressListSection" => {
+            heading,
+            subheading,
+            items[]{
+              _key,
+              title,
+              publishedAt,
+              outlet,
+              linkType,
+              url,
+              "fileUrl": file.asset->url
+            }
+          }
         }
-      },
-      _type == "pressListSection" => {
-        heading,
-        subheading,
-        items[]{
-          _key,
-          title,
-          publishedAt,
-          outlet,
-          linkType,
-          url,
-          "fileUrl": file.asset->url
-        }
-      },
-      _type == "adBannerSection" => {
-        desktopLabel,
-        desktopAdType,
-        mobileLabel,
-        mobileAdType,
-        "desktopAd": *[
-          _type == "ad" &&
-          active != false &&
-          edition == ^.^.edition &&
-          format == ^.desktopAdType
-        ] | order(_updatedAt desc)[0]{
-          alt,
-          href,
-          "imageUrl": coalesce(image.asset->url, externalImageUrl)
-        },
-        "mobileAd": *[
-          _type == "ad" &&
-          active != false &&
-          edition == ^.^.edition &&
-          format == ^.mobileAdType
-        ] | order(_updatedAt desc)[0]{
-          alt,
-          href,
-          "imageUrl": coalesce(image.asset->url, externalImageUrl)
-        }
-      }
-    },
+      )
+    }[defined(_type)],
     seo{
       metaTitle,
       metaDescription,
