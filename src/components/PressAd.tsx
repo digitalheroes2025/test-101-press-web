@@ -1,20 +1,30 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type {PressAd as PressAdType} from '@/sanity/types'
+import type {AdBannerSection, AdCreative, AdType} from '@/sanity/types'
 
 type PressAdProps = {
-  ad?: PressAdType | null
+  section: AdBannerSection
 }
 
-export function PressAd({ad}: PressAdProps) {
-  const src = ad?.imageUrl
-  if (!src) return null
+function AdSlot({
+  label,
+  adType,
+  creative,
+  className,
+}: {
+  label?: string | null
+  adType?: AdType | null
+  creative?: AdCreative
+  className?: string
+}) {
+  const src = creative?.imageUrl
+  if (!adType || !src) return null
 
   const image = (
     <Image
       src={src}
-      alt={ad?.alt || 'Anzeige'}
+      alt={creative?.alt || label || 'Anzeige'}
       width={1400}
       height={280}
       className="h-auto w-full"
@@ -23,15 +33,43 @@ export function PressAd({ad}: PressAdProps) {
   )
 
   return (
+    <div className={className}>
+      {label ? <p className="press-ad-label">{label}</p> : null}
+      {creative?.href ? (
+        <Link href={creative.href} target="_blank" rel="noopener noreferrer">
+          {image}
+        </Link>
+      ) : (
+        image
+      )}
+    </div>
+  )
+}
+
+export function PressAd({section}: PressAdProps) {
+  const hasDesktop = Boolean(section.desktopAdType && section.desktopAd?.imageUrl)
+  const hasMobile = Boolean(section.mobileAdType && section.mobileAd?.imageUrl)
+  if (!hasDesktop && !hasMobile) return null
+
+  return (
     <div className="press-section">
       <div className="site-container">
-        {ad?.href ? (
-          <Link href={ad.href} target="_blank" rel="noopener noreferrer">
-            {image}
-          </Link>
-        ) : (
-          image
-        )}
+        {hasDesktop ? (
+          <AdSlot
+            label={section.desktopLabel}
+            adType={section.desktopAdType}
+            creative={section.desktopAd}
+            className={hasMobile ? 'hidden md:block' : undefined}
+          />
+        ) : null}
+        {hasMobile ? (
+          <AdSlot
+            label={section.mobileLabel}
+            adType={section.mobileAdType}
+            creative={section.mobileAd}
+            className={hasDesktop ? 'md:hidden' : undefined}
+          />
+        ) : null}
       </div>
     </div>
   )

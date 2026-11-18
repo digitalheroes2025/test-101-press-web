@@ -3,7 +3,7 @@ import {PressContact} from '@/components/PressContact'
 import {PressList} from '@/components/PressList'
 import {cachedSanityFetch} from '@/sanity/live'
 import {PRESS_PAGE_QUERY} from '@/sanity/queries'
-import type {PressPage} from '@/sanity/types'
+import type {PressComponent, PressPage} from '@/sanity/types'
 
 const DEFAULT_PARAMS = {
   slug: 'presse',
@@ -11,10 +11,55 @@ const DEFAULT_PARAMS = {
   language: 'de',
 }
 
+function Separator() {
+  return (
+    <div className="press-section">
+      <div className="site-container">
+        <div className="section-separator" />
+      </div>
+    </div>
+  )
+}
+
+function renderComponent(component: PressComponent, index: number, total: number) {
+  const nodes = []
+
+  switch (component._type) {
+    case 'pressContactSection':
+      nodes.push(<PressContact key={component._key} section={component} />)
+      break
+    case 'pressListSection':
+      nodes.push(
+        <PressList
+          key={component._key}
+          heading={component.heading}
+          subheading={component.subheading}
+          items={component.items || []}
+        />,
+      )
+      break
+    case 'adBannerSection':
+      nodes.push(<PressAd key={component._key} section={component} />)
+      break
+    default: {
+      const _exhaustive: never = component
+      return _exhaustive
+    }
+  }
+
+  if (index < total - 1 && component._type !== 'adBannerSection') {
+    nodes.push(<Separator key={`${component._key}-separator`} />)
+  }
+
+  return nodes
+}
+
 export async function PressPageContent() {
   const {data} = await cachedSanityFetch({
     query: PRESS_PAGE_QUERY,
-    params: DEFAULT_PARAMS,
+    params: {...DEFAULT_PARAMS},
+    perspective: 'published',
+    stega: false,
   })
   const pressPage = data as PressPage | null
 
@@ -29,44 +74,13 @@ export async function PressPageContent() {
     )
   }
 
-  const items = pressPage.items || []
-  const coverage = items.filter((item) => item.category === 'coverage')
-  const releases = items.filter((item) => item.category === 'release')
-  const podcasts = items.filter((item) => item.category === 'podcast')
+  const components = pressPage.components || []
 
   return (
     <div className="min-h-full bg-paper text-ink">
-      <PressContact page={pressPage} />
-
-      <div className="press-section">
-        <div className="site-container">
-          <div className="section-separator" />
-        </div>
-      </div>
-
-      <PressList
-        heading={pressPage.presseHeading}
-        subheading={pressPage.presseSubheading}
-        items={coverage}
-      />
-
-      <div className="press-section">
-        <div className="site-container">
-          <div className="section-separator" />
-        </div>
-      </div>
-
-      <PressList heading={pressPage.releasesHeading} items={releases} />
-
-      <div className="press-section">
-        <div className="site-container">
-          <div className="section-separator" />
-        </div>
-      </div>
-
-      <PressList heading={pressPage.podcastsHeading} items={podcasts} />
-
-      <PressAd ad={pressPage.bottomAd} />
+      {components.flatMap((component, index) =>
+        renderComponent(component, index, components.length),
+      )}
     </div>
   )
 }

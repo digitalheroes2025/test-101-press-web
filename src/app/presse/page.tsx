@@ -16,7 +16,9 @@ const DEFAULT_PARAMS = {
 export async function generateMetadata(): Promise<Metadata> {
   const {data} = await cachedSanityFetch({
     query: PRESS_PAGE_QUERY,
-    params: DEFAULT_PARAMS,
+    params: {...DEFAULT_PARAMS},
+    perspective: 'published',
+    stega: false,
   })
   const page = data as PressPage | null
   const seo = page?.seo

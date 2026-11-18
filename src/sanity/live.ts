@@ -5,7 +5,7 @@ import {client} from './client'
 
 const token = process.env.SANITY_API_READ_TOKEN
 
-export const {sanityFetch, SanityLive} = defineLive({
+export const {SanityLive} = defineLive({
   client: client.withConfig({
     apiVersion: '2025-01-01',
   }),
@@ -13,16 +13,36 @@ export const {sanityFetch, SanityLive} = defineLive({
   browserToken: token || false,
 })
 
-export async function cachedSanityFetch<const Q extends string>(options: {
-  query: Q
+type CachedFetchOptions = {
+  query: string
   params?: Record<string, unknown>
-}) {
+  perspective: 'published' | 'drafts' | 'raw' | 'previewDrafts'
+  stega: boolean
+}
+
+/**
+ * Shared `'use cache'` fetch that avoids next-sanity/sanityFetch's interaction
+ * with Next's module-scoped fetch dedupe Map (which breaks Cache Components).
+ */
+export async function cachedSanityFetch(options: CachedFetchOptions) {
   'use cache'
-  cacheTag('sanity')
-  cacheTag('sanity:pressPage')
-  cacheLife('minutes')
-  return sanityFetch({
-    ...options,
-    stega: false,
+
+  const {query, params = {}, perspective, stega} = options
+  const useToken = perspective !== 'published' || stega
+
+  const {result, syncTags} = await client.fetch(query, params, {
+    filterResponse: false,
+    perspective,
+    stega,
+    useCdn: perspective === 'published',
+    token: useToken && token ? token : undefined,
+    // Prevent Next from sharing an in-flight fetch Promise across cache boundaries.
+    cache: 'no-store',
   })
+
+  const tags = ['sanity', 'sanity:pressPage', ...(syncTags || []).map((tag) => `sanity:${tag}`)]
+  cacheTag(...tags)
+  cacheLife('minutes')
+
+  return {data: result}
 }

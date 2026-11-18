@@ -1,7 +1,7 @@
-import type {ContactDetail, PressPage} from '@/sanity/types'
+import type {ContactDetail, PressContactSection} from '@/sanity/types'
 
 type PressContactProps = {
-  page: PressPage
+  section: PressContactSection
 }
 
 function ContactItem({
@@ -27,40 +27,31 @@ function ContactItem({
   )
 }
 
-export function PressContact({page}: PressContactProps) {
-  const phoneText = page.phone?.text?.trim()
-  const emailText = page.email?.text?.trim()
-  const phoneHref = phoneText ? `tel:${phoneText.replace(/\s+/g, '')}` : undefined
+export function PressContact({section}: PressContactProps) {
+  const emailText = section.email?.text?.trim()
   const emailHref = emailText ? `mailto:${emailText}` : undefined
 
   return (
     <>
       <section className="press-section--intro">
         <div className="site-container">
-          <h1 className="press-heading">Pressekontakt</h1>
+          <h1 className="press-heading">{section.heading || 'Pressekontakt'}</h1>
           <div className="press-contact-text">
-            <p>{page.companyName}</p>
-            <p>{page.contactName}</p>
+            <p>{section.companyName}</p>
+            <p>{section.contactName}</p>
           </div>
         </div>
       </section>
 
       <section className="press-section">
         <div className="site-container">
-          <div className="mx-[-12px] flex flex-wrap">
-            <div className="w-full px-3 md:w-1/3">
-              <ContactItem detail={page.address} fallbackSrc="/icons/location.svg" />
+          <div className="mx-[-12px] flex flex-wrap justify-center">
+            <div className="w-full px-3 md:w-1/2">
+              <ContactItem detail={section.address} fallbackSrc="/icons/location.svg" />
             </div>
-            <div className="w-full px-3 md:w-1/3">
+            <div className="w-full px-3 md:w-1/2">
               <ContactItem
-                detail={page.phone}
-                fallbackSrc="/icons/phone.svg"
-                href={phoneHref}
-              />
-            </div>
-            <div className="w-full px-3 md:w-1/3">
-              <ContactItem
-                detail={page.email}
+                detail={section.email}
                 fallbackSrc="/icons/email.svg"
                 href={emailHref}
               />
