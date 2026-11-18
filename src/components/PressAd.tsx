@@ -34,7 +34,6 @@ function AdSlot({
 
   return (
     <div className={className}>
-      {label ? <p className="press-ad-label">{label}</p> : null}
       {creative?.href ? (
         <Link href={creative.href} target="_blank" rel="noopener noreferrer">
           {image}
