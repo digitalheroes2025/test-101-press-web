@@ -1,10 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  --brand-ink: #000000;
-  --brand-paper: #ffffff;
-  --brand-copper: #c35f3d;
-  --brand-nav: #000000;
   --site-container: 1320px;
 }
 
@@ -12,7 +8,6 @@
   --color-ink: #000000;
   --color-paper: #ffffff;
   --color-copper: #c35f3d;
-  --color-nav: #000000;
   --font-display: var(--font-display-face), "Times New Roman", Georgia, serif;
   --font-body: var(--font-body-face), "Helvetica Neue", Arial, sans-serif;
 }
@@ -25,16 +20,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Keep Next.js issue/dev badge from covering the privacy widget (dev only). */
-nextjs-portal {
-  display: none !important;
-}
-
-/* Keep Next.js issue/dev badge from covering the privacy widget (dev only). */
-nextjs-portal {
-  display: none !important;
-}
-
 body {
   margin: 0;
   min-height: 100%;
@@ -43,14 +28,14 @@ body {
   font-family: var(--font-body);
   font-weight: 300;
   font-size: 21px;
-  line-height: 25.2px;
+  line-height: 1.2;
   -webkit-font-smoothing: antialiased;
 }
 
 @layer components {
   .site-container {
     width: 100%;
-    max-width: 1320px;
+    max-width: var(--site-container);
     margin-inline: auto;
     padding-inline: 12px;
   }
@@ -65,12 +50,16 @@ body {
     margin: 0 0 120px;
   }
 
+  .press-section--intro {
+    margin: 100px 0 120px;
+  }
+
   .press-heading {
     margin: 0 0 5px;
     font-family: var(--font-display);
     font-size: 43px;
     font-weight: 300;
-    line-height: 49.88px;
+    line-height: 1.16;
     text-align: center;
     color: #000000;
   }
@@ -80,54 +69,128 @@ body {
     font-family: var(--font-body);
     font-size: 33px;
     font-weight: 300;
-    line-height: 38.28px;
+    line-height: 1.16;
     text-align: center;
     color: #000000;
   }
 
-  /* Live: ~120px date column + 30px gutter before copper title */
-  .press-item {
-    display: grid;
-    grid-template-columns: 120px minmax(0, 1fr);
-    column-gap: 30px;
-    align-items: start;
-    margin: 0 0 15px;
-    padding: 0;
+  .press-contact-text {
+    margin-top: 30px;
     font-family: var(--font-body);
     font-size: 21px;
     font-weight: 300;
-    line-height: 25.2px;
+    line-height: 1.2;
+    text-align: center;
     color: #000000;
   }
 
-  .press-item a {
+  .press-contact-text p {
+    margin: 0 0 40px;
+  }
+
+  .press-contact-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .press-contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.16;
+    letter-spacing: 0.4px;
+    text-align: center;
+    color: #000000;
+  }
+
+  .press-contact-item img {
+    margin-right: 15px;
+    height: 23px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .press-contact-item a {
+    color: #000000;
+    text-decoration: none;
+  }
+
+  .press-contact-item a:hover {
+    color: #c35f3d;
+  }
+
+  .press-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-body);
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    color: #000000;
+  }
+
+  .press-list li {
+    margin: 0 0 15px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .press-list a {
+    margin-left: 30px;
     color: #c35f3d;
     text-decoration: underline;
     text-decoration-color: #c35f3d;
-    text-underline-offset: 2px;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1439px) {
   body {
     font-size: 18px;
-    line-height: 21.6px;
   }
 
   .press-heading {
     font-size: 38px;
-    line-height: 44px;
   }
 
   .press-subheading {
     font-size: 28px;
-    line-height: 32.5px;
   }
 
-  .press-item {
-    grid-template-columns: 108px minmax(0, 1fr);
-    column-gap: 16px;
+  .press-contact-text {
     font-size: 18px;
-    line-height: 21.6px;
+  }
+
+  .press-list {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .press-section--intro {
+    margin-top: 60px;
+  }
+
+  .press-heading {
+    font-size: 33px;
+  }
+
+  .press-subheading {
+    font-size: 20px;
+  }
+
+  .press-contact-item {
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .press-list a {
+    display: block;
+    margin-left: 0;
   }
 }

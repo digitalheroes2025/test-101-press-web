@@ -1,11 +1,22 @@
 import type {Metadata} from 'next'
 import {Suspense} from 'react'
 
+import {cachedSanityFetch} from '@/sanity/live'
+import {PRESS_PAGE_QUERY} from '@/sanity/queries'
+import type {PressPage} from '@/sanity/types'
+
 import {PressPageContent} from './PressPageContent'
 
-export const metadata: Metadata = {
-  title: 'Presse - Die 101 Besten',
-  description: 'Pressekontakt und Berichterstattung zu Die 101 besten Hotels Deutschlands.',
+export async function generateMetadata(): Promise<Metadata> {
+  const {data} = await cachedSanityFetch({query: PRESS_PAGE_QUERY})
+  const page = data as PressPage | null
+
+  return {
+    title: page?.seoTitle || 'Presse - Die 101 Besten',
+    description:
+      page?.seoDescription ||
+      'Pressekontakt und Berichterstattung zu Die 101 besten Hotels Deutschlands.',
+  }
 }
 
 function PresseFallback() {

@@ -28,39 +28,23 @@ export function PressList({heading, subheading, items}: PressListProps) {
 
   return (
     <>
-      <section className="mb-[120px]">
-        <div className="mx-auto w-full max-w-[1320px] px-3">
-          <h2 className="mb-[5px] text-center font-display text-[43px] font-light leading-[49.88px] text-ink max-md:text-[38px] max-md:leading-[44px]">
-            {heading}
-          </h2>
-          {subheading ? (
-            <p className="mb-[17px] text-center font-body text-[33px] font-light leading-[38.28px] text-ink max-md:text-[28px] max-md:leading-[32.5px]">
-              {subheading}
-            </p>
-          ) : null}
+      <section className="press-section">
+        <div className="site-container">
+          <h2 className="press-heading">{heading}</h2>
+          {subheading ? <p className="press-subheading">{subheading}</p> : null}
         </div>
       </section>
 
-      <section className="mb-[120px]">
-        <div className="mx-auto w-full max-w-[1320px] px-3">
-          <ul className="m-0 list-none p-0">
+      <section className="press-section">
+        <div className="site-container">
+          <ul className="press-list">
             {items.map((item) => (
-              <li
-                key={item._id}
-                className="mb-[15px] grid grid-cols-[120px_minmax(0,1fr)] items-start gap-x-[30px] p-0 font-body text-[21px] font-light leading-[25.2px] text-ink max-md:grid-cols-[108px_minmax(0,1fr)] max-md:gap-x-4 max-md:text-[18px] max-md:leading-[21.6px]"
-              >
-                <span className="whitespace-nowrap">{formatDate(item.publishedAt)}:</span>
-                <span className="min-w-0">
-                  <a
-                    href={resolveHref(item)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-copper underline decoration-copper underline-offset-[2px]"
-                  >
-                    {item.title}
-                  </a>
-                  {item.outlet ? <span> ({item.outlet})</span> : null}
-                </span>
+              <li key={item._key}>
+                {formatDate(item.publishedAt)}:
+                <a href={resolveHref(item)} target="_blank" rel="noopener noreferrer">
+                  {item.title}
+                </a>
+                {item.outlet ? ` (${item.outlet})` : null}
               </li>
             ))}
           </ul>

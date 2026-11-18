@@ -6,7 +6,6 @@ import {SanityLive} from '@/sanity/live'
 
 import './globals.css'
 
-/* Closest licensed stand-ins for live Ogg (serif) + GT Eesti Text (sans) */
 const display = Cormorant_Garamond({
   variable: '--font-display-face',
   subsets: ['latin'],
@@ -16,7 +15,7 @@ const display = Cormorant_Garamond({
 const body = Figtree({
   variable: '--font-body-face',
   subsets: ['latin'],
-  weight: ['300', '400', '500'],
+  weight: ['300', '400'],
 })
 
 export const metadata: Metadata = {

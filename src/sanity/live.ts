@@ -1,3 +1,4 @@
+import {cacheLife, cacheTag} from 'next/cache'
 import {defineLive} from 'next-sanity/live'
 
 import {client} from './client'
@@ -17,6 +18,9 @@ export async function cachedSanityFetch<const Q extends string>(options: {
   params?: Record<string, unknown>
 }) {
   'use cache'
+  cacheTag('sanity')
+  cacheTag('sanity:pressPage')
+  cacheLife('minutes')
   return sanityFetch({
     ...options,
     stega: false,
