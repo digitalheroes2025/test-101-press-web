@@ -39,7 +39,7 @@ export function PressContact({page}: PressContactProps) {
         <div className="site-container">
           <h1 className="press-heading">Pressekontakt</h1>
           <div className="press-contact-text">
-            <p>{page.agencyName}</p>
+            <p>{page.companyName}</p>
             <p>{page.contactName}</p>
           </div>
         </div>

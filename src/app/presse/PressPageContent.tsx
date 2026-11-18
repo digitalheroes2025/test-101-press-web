@@ -5,8 +5,17 @@ import {cachedSanityFetch} from '@/sanity/live'
 import {PRESS_PAGE_QUERY} from '@/sanity/queries'
 import type {PressPage} from '@/sanity/types'
 
+const DEFAULT_PARAMS = {
+  slug: 'presse',
+  edition: 'deutschland',
+  language: 'de',
+}
+
 export async function PressPageContent() {
-  const {data} = await cachedSanityFetch({query: PRESS_PAGE_QUERY})
+  const {data} = await cachedSanityFetch({
+    query: PRESS_PAGE_QUERY,
+    params: DEFAULT_PARAMS,
+  })
   const pressPage = data as PressPage | null
 
   if (!pressPage) {
@@ -14,8 +23,7 @@ export async function PressPageContent() {
       <div className="site-container py-24 text-center">
         <h1 className="press-heading">Presse</h1>
         <p className="press-contact-text">
-          Press content is not available yet. Open Sanity Studio and publish the Press Page
-          singleton.
+          Press content is not available yet. Open Sanity Studio and publish a Press Page.
         </p>
       </div>
     )

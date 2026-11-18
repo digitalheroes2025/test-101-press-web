@@ -1,4 +1,6 @@
 export type PressCategory = 'coverage' | 'release' | 'podcast'
+export type PressLanguage = 'de' | 'en'
+export type PressEdition = 'deutschland' | 'schweiz' | 'austria'
 
 export type PressItem = {
   _key: string
@@ -16,6 +18,16 @@ export type ContactDetail = {
   iconUrl?: string | null
 } | null
 
+export type SeoSettings = {
+  metaTitle?: string | null
+  metaDescription?: string | null
+  ogImageUrl?: string | null
+  ogImageAlt?: string | null
+  keywords?: string[] | null
+  canonicalUrl?: string | null
+  noIndex?: boolean | null
+} | null
+
 export type PressAd = {
   alt?: string | null
   href?: string | null
@@ -23,7 +35,11 @@ export type PressAd = {
 } | null
 
 export type PressPage = {
-  agencyName: string
+  title: string
+  language: PressLanguage
+  slug?: string | null
+  edition: PressEdition
+  companyName: string
   contactName: string
   address?: ContactDetail
   phone?: ContactDetail
@@ -33,7 +49,6 @@ export type PressPage = {
   releasesHeading: string
   podcastsHeading: string
   bottomAd?: PressAd
-  seoTitle?: string | null
-  seoDescription?: string | null
+  seo?: SeoSettings
   items?: PressItem[] | null
 }

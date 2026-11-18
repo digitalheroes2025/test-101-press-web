@@ -7,15 +7,37 @@ import type {PressPage} from '@/sanity/types'
 
 import {PressPageContent} from './PressPageContent'
 
+const DEFAULT_PARAMS = {
+  slug: 'presse',
+  edition: 'deutschland',
+  language: 'de',
+}
+
 export async function generateMetadata(): Promise<Metadata> {
-  const {data} = await cachedSanityFetch({query: PRESS_PAGE_QUERY})
+  const {data} = await cachedSanityFetch({
+    query: PRESS_PAGE_QUERY,
+    params: DEFAULT_PARAMS,
+  })
   const page = data as PressPage | null
+  const seo = page?.seo
+
+  const pageTitle = page?.title || 'Presse - Die 101 Besten'
 
   return {
-    title: page?.seoTitle || 'Presse - Die 101 Besten',
+    title: pageTitle,
     description:
-      page?.seoDescription ||
+      seo?.metaDescription ||
       'Pressekontakt und Berichterstattung zu Die 101 besten Hotels Deutschlands.',
+    keywords: seo?.keywords || undefined,
+    robots: seo?.noIndex ? {index: false, follow: false} : undefined,
+    alternates: seo?.canonicalUrl ? {canonical: seo.canonicalUrl} : undefined,
+    openGraph: {
+      title: pageTitle,
+      description: seo?.metaDescription || undefined,
+      images: seo?.ogImageUrl
+        ? [{url: seo.ogImageUrl, alt: seo.ogImageAlt || undefined}]
+        : undefined,
+    },
   }
 }
 
